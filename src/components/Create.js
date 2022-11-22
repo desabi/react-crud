@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'semantic-ui-react'
+import { useNavigate } from 'react-router';
 import axios from 'axios';
 
 export default function Create() {
@@ -9,6 +10,8 @@ export default function Create() {
     const [height, setHeight] = useState();
     const [phone, setPhone] = useState();
 
+    let navigate = useNavigate();
+
     const postData = () => {
         console.log(name);
         console.log(age);
@@ -17,7 +20,9 @@ export default function Create() {
 
         axios.post(`/person`, {
             name, age, height, phone
-        });
+        }).then(() => {
+            navigate('/read');
+        })
     }
 
     return (

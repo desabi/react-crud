@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'semantic-ui-react'
+import { useNavigate } from 'react-router-dom';
+
 import axios from 'axios';
 
 export default function Update() {
+
+    let navigate = useNavigate();
 
     const [name, setName] = useState('');
     const [age, setAge] = useState();
@@ -21,6 +25,8 @@ export default function Update() {
     const updateAPIData = () => {
         axios.put(`/person/${objectId}`, {
             name, age, height, phone
+        }).then(() => {
+            navigate('/read');
         })
     }
 
