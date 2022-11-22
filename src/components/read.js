@@ -7,18 +7,32 @@ export default function Read() {
   const [APIData, setAPIData] = useState([]);
 
   useEffect(() => {
-    axios.get(`/person`).then((response) => {      
+    axios.get(`/person`).then((response) => {
       setAPIData(response.data);
     });
   }, []);
 
   const setData = (data) => {
-    let {objectId, name, age, height, phone } = data;
-    localStorage.setItem('objectId', objectId);
-    localStorage.setItem('Name', name);
-    localStorage.setItem('Age', age);
-    localStorage.setItem('Height', height);
-    localStorage.setItem('Phone', phone);        
+    let { objectId, name, age, height, phone } = data;
+    localStorage.setItem("objectId", objectId);
+    localStorage.setItem("Name", name);
+    localStorage.setItem("Age", age);
+    localStorage.setItem("Height", height);
+    localStorage.setItem("Phone", phone);
+  };
+
+  const onDelete = (objectId) => {
+    axios.delete(`/person/${objectId}`)
+    .then( () => {
+        getData();
+    })
+  }
+
+  const getData = () => {
+    axios.get(`/person`)
+    .then( (getData) => {
+        setAPIData(getData.data);
+    })
   }
 
   return (
@@ -42,11 +56,14 @@ export default function Read() {
                 <Table.Cell>{data.age}</Table.Cell>
                 <Table.Cell>{data.height}</Table.Cell>
                 <Table.Cell>{data.phone}</Table.Cell>
-                <Link to='/update'>
+                <Link to="/update">
                   <Table.Cell>
-                    <Button onClick={ () => setData(data) }>Update</Button>
+                    <Button onClick={() => setData(data)}>Update</Button>
                   </Table.Cell>
                 </Link>
+                <Table.Cell>
+                  <Button onClick={() => onDelete(data.objectId)}>Delete</Button>
+                </Table.Cell>
               </Table.Row>
             );
           })}
